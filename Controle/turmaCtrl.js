@@ -1,41 +1,41 @@
 //camada de interface da API que traduz HTTP
-import Categoria from "../Modelo/categoria.js";
+import Turma from "../Modelo/turma.js";
 
-export default class CategoriaCtrl {
+export default class TurmaCtrl {
 
     gravar(requisicao, resposta) {
         resposta.type('application/json');
         if (requisicao.method === 'POST' && requisicao.is('application/json')) {
             const dados = requisicao.body;
-            const descricao = dados.descricao;
-            if (descricao) {
-                const categoria = new Categoria(0, descricao);
+            const serie = dados.serie;
+            if (serie) {
+                const turma = new Turma(0, serie);
                 //resolver a promise
-                categoria.gravar().then(() => {
+                turma.gravar().then(() => {
                     resposta.status(200).json({
                         "status": true,
-                        "codigoGerado": categoria.codigo,
-                        "mensagem": "Categoria incluída com sucesso!"
+                        "codigoGerado": turma.codigo,
+                        "mensagem": "Turma incluída com sucesso!"
                     });
                 })
                     .catch((erro) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao registrar a categoria:" + erro.message
+                            "mensagem": "Erro ao registrar a turma:" + erro.message
                         });
                     });
             }
             else {
                 resposta.status(400).json({
                     "status": false,
-                    "mensagem": "Por favor, informe a descrição da categoria!"
+                    "mensagem": "Por favor, informe a série da turma!"
                 });
             }
         }
         else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize o método POST para cadastrar uma categoria!"
+                "mensagem": "Por favor, utilize o método POST para cadastrar uma turma!"
             });
         }
     }
@@ -45,34 +45,34 @@ export default class CategoriaCtrl {
         if ((requisicao.method === 'PUT' || requisicao.method === 'PATCH') && requisicao.is('application/json')) {
             const dados = requisicao.body;
             const codigo = dados.codigo;
-            const descricao = dados.descricao;
-            if (codigo && descricao) {
-                const categoria = new Categoria(codigo, descricao);
+            const serie = dados.serie;
+            if (codigo && serie) {
+                const turma = new Turma(codigo, serie);
                 //resolver a promise
                 categoria.atualizar().then(() => {
                     resposta.status(200).json({
                         "status": true,
-                        "mensagem": "Categoria atualizada com sucesso!"
+                        "mensagem": "Turma atualizada com sucesso!"
                     });
                 })
                     .catch((erro) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao atualizar a categoria:" + erro.message
+                            "mensagem": "Erro ao atualizar a Turma:" + erro.message
                         });
                     });
             }
             else {
                 resposta.status(400).json({
                     "status": false,
-                    "mensagem": "Por favor, informe o código e a descrição da categoria!"
+                    "mensagem": "Por favor, informe o código e a série da Turma!"
                 });
             }
         }
         else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize os métodos PUT ou PATCH para atualizar uma categoria!"
+                "mensagem": "Por favor, utilize os métodos PUT ou PATCH para atualizar uma turma!"
             });
         }
     }
@@ -83,32 +83,32 @@ export default class CategoriaCtrl {
             const dados = requisicao.body;
             const codigo = dados.codigo;
             if (codigo) {
-                const categoria = new Categoria(codigo);
+                const turma = new Turma(codigo);
                 //resolver a promise
                 categoria.excluir().then(() => {
                     resposta.status(200).json({
                         "status": true,
-                        "mensagem": "Categoria excluída com sucesso!"
+                        "mensagem": "Turma excluída com sucesso!"
                     });
                 })
                     .catch((erro) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao excluir a categoria:" + erro.message
+                            "mensagem": "Erro ao excluir a Turma:" + erro.message
                         });
                     });
             }
             else {
                 resposta.status(400).json({
                     "status": false,
-                    "mensagem": "Por favor, informe o código da categoria!"
+                    "mensagem": "Por favor, informe o código da Turma!"
                 });
             }
         }
         else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize o método DELETE para excluir uma categoria!"
+                "mensagem": "Por favor, utilize o método DELETE para excluir uma turma!"
             });
         }
     }
@@ -118,24 +118,24 @@ export default class CategoriaCtrl {
         resposta.type('application/json');
         //express, por meio do controle de rotas, será
         //preparado para esperar um termo de busca
-        let termo = requisicao.params.termo;
-        if (!termo){
-            termo = "";
+        let numero = requisicao.params.numero;
+        if (!numero){
+            numero = "";
         }
         if (requisicao.method === "GET"){
-            const categoria = new Categoria();
-            categoria.consultar(termo).then((listaCategorias)=>{
+            const turma = new Turma();
+            turma.consultar(numero).then((listaTurmas)=>{
                 resposta.json(
                     {
                         status:true,
-                        listaCategorias
+                        listaTurmas
                     });
             })
             .catch((erro)=>{
                 resposta.json(
                     {
                         status:false,
-                        mensagem:"Não foi possível obter as categorias: " + erro.message
+                        mensagem:"Não foi possível obter as turmas: " + erro.message
                     }
                 );
             });
@@ -144,7 +144,7 @@ export default class CategoriaCtrl {
         {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize o método GET para consultar categorias!"
+                "mensagem": "Por favor, utilize o método GET para consultar turmas!"
             });
         }
     }

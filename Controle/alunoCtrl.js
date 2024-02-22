@@ -42,13 +42,13 @@ export default class AlunoCtrl {
         resposta.type('application/json');
         if ((requisicao.method === 'PUT' || requisicao.method === 'PATCH') && requisicao.is('application/json')) {
             const dados = requisicao.body;
-            const { ra, nome, dataNascimento, telefone, email, cpf, turma } = dados;
+            const { aluno_ra, nome, dataNascimento, telefone, email, cpf, turma } = dados;
 
             // Validando os dados de entrada
-            if (ra && nome && dataNascimento && telefone && email && cpf && turma) {
-                const aluno = new Aluno(ra, nome, dataNascimento, telefone, email, cpf, turma);
+            if (aluno_ra && nome && dataNascimento && telefone && email && cpf && turma) {
+                const aluno = new Aluno(aluno_ra, nome, dataNascimento, telefone, email, cpf, turma);
                 try {
-                    await aluno.atualizar();
+                    await aluno.alterar();
                     resposta.status(200).json({
                         "status": true,
                         "mensagem": "Aluno atualizado com sucesso!"
@@ -77,9 +77,9 @@ export default class AlunoCtrl {
         resposta.type('application/json');
         if (requisicao.method === 'DELETE' && requisicao.is('application/json')) {
             const dados = requisicao.body;
-            const { ra } = dados;
-            if (ra) {
-                const aluno = new Aluno(ra);
+            const {aluno_ra } = dados;
+            if (aluno_ra ) {
+                const aluno = new Aluno(aluno_ra);
                 try {
                     await aluno.excluir();
                     resposta.status(200).json({

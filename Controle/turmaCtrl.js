@@ -44,12 +44,12 @@ export default class TurmaCtrl {
         resposta.type('application/json');
         if ((requisicao.method === 'PUT' || requisicao.method === 'PATCH') && requisicao.is('application/json')) {
             const dados = requisicao.body;
-            const codigo = dados.codigo;
+            const codigo = dados.turma_codigo; // Asegure-se de que está usando o nome correto da propriedade conforme enviado no corpo da requisição
             const serie = dados.serie;
             if (codigo && serie) {
-                const turma = new Turma(codigo, serie);
-                //resolver a promise
-                categoria.atualizar().then(() => {
+                const turma = new Turma(codigo, serie); // Use as variáveis corretamente definidas
+                // Verifique se o método 'atualizar' existe na classe 'Turma' e faça a chamada corretamente
+                turma.atualizar().then(() => {
                     resposta.status(200).json({
                         "status": true,
                         "mensagem": "Turma atualizada com sucesso!"
@@ -76,42 +76,41 @@ export default class TurmaCtrl {
             });
         }
     }
+    
 
-    excluir(requisicao, resposta) {
+    async excluir(requisicao, resposta) {
         resposta.type('application/json');
         if (requisicao.method === 'DELETE' && requisicao.is('application/json')) {
             const dados = requisicao.body;
-            const codigo = dados.codigo;
-            if (codigo) {
-                const turma = new Turma(codigo);
-                //resolver a promise
-                categoria.excluir().then(() => {
+            const { turma_codigo } = dados; // Alterado aqui para acessar 'turma_codigo'
+            if (turma_codigo) {
+                const turma = new Turma(turma_codigo); // Alterado aqui para passar 'turma_codigo'
+                try {
+                    await turma.excluir(); // Chamando o método de exclusão corretamente
                     resposta.status(200).json({
                         "status": true,
                         "mensagem": "Turma excluída com sucesso!"
                     });
-                })
-                    .catch((erro) => {
-                        resposta.status(500).json({
-                            "status": false,
-                            "mensagem": "Erro ao excluir a Turma:" + erro.message
-                        });
+                } catch (erro) {
+                    resposta.status(500).json({
+                        "status": false,
+                        "mensagem": "Erro ao excluir a Turma: " + erro.message
                     });
-            }
-            else {
+                }
+            } else {
                 resposta.status(400).json({
                     "status": false,
                     "mensagem": "Por favor, informe o código da Turma!"
                 });
             }
-        }
-        else {
+        } else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize o método DELETE para excluir uma turma!"
+                "mensagem": "Por favor, utilize o método DELETE para excluir uma Turma!"
             });
         }
     }
+    
 
 
     consultar(requisicao, resposta) {

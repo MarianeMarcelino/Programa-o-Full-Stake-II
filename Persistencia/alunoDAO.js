@@ -21,7 +21,7 @@ export default class AlunoDAO {
     async atualizar(aluno) {
         if (aluno instanceof Aluno) {
             const sql = `UPDATE aluno SET aluno_nome = ?, aluno_dataNascimento = ?,
-            aluno_telefone = ?, aluno_email = ?, aluno_cpf = ?, turma_codigo = ?,
+            aluno_telefone = ?, aluno_email = ?, aluno_cpf = ?, turma_codigo = ?
             WHERE aluno_ra = ?`;
             const parametros = [aluno.nome, aluno.dataNascimento, aluno.telefone,
             aluno.email, aluno.cpf, aluno.turma.codigo,aluno.ra];

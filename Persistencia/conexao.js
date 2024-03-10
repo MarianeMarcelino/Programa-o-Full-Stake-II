@@ -7,13 +7,13 @@ export default async function conectar(){
     else{
         const pool = mysql.createPool({
             host: '129.146.68.51',
-            user: 'aluno21-pfsii',
-            password:'aluno21-pfsii',
+            user: process.env.USUARIO_BD,
+            password:process.env.SENHA_BD,
             database: 'BackendAluno21',
             waitForConnections: true,
             connectionLimit: 10,
-            maxIdle: 10, // max idle connections, the default value is the same as `connectionLimit`
-            idleTimeout: 60000, // idle connections timeout, in milliseconds, the default value 60000
+            maxIdle: 10, 
+            idleTimeout: 60000,
             queueLimit: 0,
             enableKeepAlive: true,
             keepAliveInitialDelay: 0

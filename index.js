@@ -3,6 +3,7 @@ import cors from 'cors';
 import rotaTurma from './Rotas/rotaTurma.js';
 import rotaAluno from './Rotas/rotaAluno.js';
 import rotaLogin from './Rotas/rotaLogin.js';
+import rotaAtividadeExtracurricular from './Rotas/rotaAtividadeExtracurricular.js';
 import dotenv from 'dotenv';
 import session from 'express-session';
 import { verificarAcesso } from './Seguranca/Autenticacao.js';
@@ -27,6 +28,7 @@ app.use(session({
 app.use('/login',rotaLogin);
 app.use('/turma',verificarAcesso,rotaTurma);
 app.use('/aluno',verificarAcesso,rotaAluno);
+app.use('/atividadeExtracurricular',verificarAcesso,rotaAtividadeExtracurricular);
 
 app.listen(porta, host, ()=>{
     console.log(`Servidor escutando na porta ${host}:${porta}.`);

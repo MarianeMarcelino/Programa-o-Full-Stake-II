@@ -22,13 +22,13 @@ export function autenticar (requisicao, resposta){
 export function verificarAcesso(requisicao,resposta,next){
     const token = requisicao.headers['authorization'];
     
-    let tokenDecodificado = '';
+    let tokenDecodificado = undefined;
     
     if(token){
         tokenDecodificado = verificarAssinatura(token);
     }
 
-    if (tokenDecodificado.usuario.usuario == requisicao.session.usuarioAutenticado){
+    if ((tokenDecodificado !== undefined) && (tokenDecodificado.usuario.usuario == requisicao.session.usuarioAutenticado)){
         next();
     }
     
